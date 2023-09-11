@@ -1,0 +1,69 @@
+1.Retrieve the top 3 donors along with their names and the total quantity of items 
+they have donated.
+
+select donor_name, total_donation_quantity from
+(select d.name as donor_name,sum(di.quantity) as total_donation_quantity from donors d 
+join transactions t on d.donor_id = t.donor_id
+ join donated_items di on t.transaction_id = di.transaction_id
+ group by d.donor_id, d.name
+ order by total_donation_quantity desc) where rownum <= 3;
+
+2.Find the top 4 recipients who have received the most deliveries, along with their 
+names and delivery counts.
+
+SELECT *
+FROM (SELECT r.name AS recipient_name, COUNT(t.transaction_id) AS delivery_count
+ FROM recipients r
+ JOIN transactions t ON r.recipient_id = t.recipient_id
+ GROUP BY r.recipient_id, r.name
+ ORDER BY delivery_count DESC
+)WHERE
+ROWNUM<=4;
+
+3.Retrieve the categories of food items that have expired, along with the count of 
+expired items in each category.
+
+SELECT fi.category, COUNT(fi.item_id) AS expired_item_count
+FROM food_items fi WHERE
+fi.expiration_date <= SYSDATE
+GROUP BY 
+fi.category;
+
+4.Find the names of donors and their most recent donation dates.
+
+SELECT d.name AS donor_name,
+MAX(t.transaction_date) AS most_recent_donation
+FROM donors d JOIN transactions t ON d.donor_id = t.donor_id
+GROUP BY
+ d.name;
+
+5.Calculate the average donation quantity per donor and sort the results in 
+descending/any order.
+
+SELECT d.name AS donor_name, AVG(di.quantity) AS avg_donation_quantity
+FROM donors d JOIN transactions t ON d.donor_id = t.donor_id
+JOIN donated_items di ON t.transaction_id = di.transaction_id
+GROUP BY
+ d.name
+ORDER BY
+ d.name;
+
+ 6.Find the names of recipients who have received donations with a total quantity 
+greater than 100
+
+SELECT r.name AS recipient_name FROM recipients r
+JOIN transactions t ON r.recipient_id = t.recipient_id
+JOIN donated_items di ON t.transaction_id = di.transaction_id
+GROUP BY r.recipient_id, r.name
+HAVING
+SUM(di.quantity) > 100;
+
+7. Count the total number of donated items across all transactions till july.
+
+SELECT SUM(di.quantity) AS total_donated_items
+FROM donated_items di
+JOIN transactions t ON di.transaction_id = t.transaction_id
+WHERE t.transaction_date <= DATE '2023-07-31';
+
+
+
