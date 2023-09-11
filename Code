@@ -1,4 +1,4 @@
-## Table creation
+Table creation and insertion
 1. CREATE TABLE donors (donor_id int primary key,name varchar(50),contact_info 
 varchar(50),address VARCHAR(100));
 INSERT INTO donors values (‘&donor_id’, ‘&name’,’&contact_info’, ‘&address’);
