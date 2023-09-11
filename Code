@@ -1,0 +1,23 @@
+## Table creation
+1. CREATE TABLE donors (donor_id int primary key,name varchar(50),contact_info 
+varchar(50),address VARCHAR(100));
+INSERT INTO donors values (‘&donor_id’, ‘&name’,’&contact_info’, ‘&address’);
+
+2. .CREATE TABLE recipients(recipient int primary key,name VARCHAR(50),contact_info 
+varchar(50),organization varchar(100));
+INSERT INTO recipients values(&recipient_id,'& name', '&contact_info', '&organization');
+
+3. CREATE TABLE food_items (item_id int primary key,name varchar(50),category 
+varchar(50),expiration_date date);
+INSERT INTO food_items values(&item_id, '&name','&category','&expiration_date');
+
+4. CREATE TABLE transactions (transaction_id int primary key, donor_id references 
+donors(donor_id) on delete set null, recipient_id references recipients(recipient_id) on delete 
+set null, transaction_date date, delivery_address varchar(100),status varchar(20) );
+INSERT INTO transactions values(&transaction_id ,&donor_id,&recipient_id,’&transaction 
+_date’,’&delivery_address’,’&status’);
+
+ 5. CREATE TABLE donated_items (donated_item_id int primary key, transaction_id 
+references transactions(transaction_id) on delete set null, item_id references 
+food_items(item_id) on delete set null, quantity INT);
+INSERT INTO donated_items (&donated_item_id, &transaction_id, &item_id, &quantity);
